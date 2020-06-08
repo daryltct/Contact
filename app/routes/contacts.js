@@ -49,8 +49,35 @@ router.post('/', authenticateToken, [ check('name', 'Please enter a name').not()
 // @route   PUT api/contacts/:id
 // @desc    Update a particular contact (UPDATE)
 // @access  Private
-router.put('/:id', (req, res) => {
-	res.send('Update contact');
+router.put('/:id', authenticateToken, async (req, res) => {
+	const { name, email, phone, type } = req.body;
+
+	const updatedFields = {};
+	if (name) updatedFields.name = name;
+	if (email) updatedFields.email = email;
+	if (phone) updatedFields.phone = phone;
+	if (type) updatedFields.type = type;
+
+	try {
+		//check if contact exists
+		let contact = await Contact.findById(req.params.id);
+		if (!contact) {
+			return res.status(404).json({ msg: 'Contact not found' });
+		}
+
+		//ensure users owns the contact
+		if (contact.user.toString() !== req.user.id) {
+			return res.status(401).json({ msg: 'You have no permission to do that' });
+		}
+
+		//update contact and save to database
+		contact = await Contact.findByIdAndUpdate(req.params.id, { $set: updatedFields }, { new: true }); //if contact field does not exist, then create it
+
+		res.json(contact);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send('Server Error');
+	}
 });
 
 // @route   DELETE api/contacts/:id
