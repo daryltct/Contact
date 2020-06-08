@@ -7,7 +7,7 @@ const checkToken = (req, res, next) => {
 
 	//check if token exists
 	if (!token) {
-		return res.status(401).json({ msg: 'You have no permission to access this page' });
+		return res.status(401).json({ msg: 'You have to be logged in to access this page' });
 	}
 
 	try {
