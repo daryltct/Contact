@@ -9,7 +9,15 @@ const Contact = require('../models/Contact');
 // @route   GET api/contacts
 // @desc    Get all user's contacts (READ)
 // @access  Private
-router.get('/', (req, res) => {});
+router.get('/', authenticateToken, async (req, res) => {
+	try {
+		const contacts = await Contact.find({ user: req.user.id }).sort({ date: -1 }); //sort by most recent
+		res.json(contacts);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send('Server Error');
+	}
+});
 
 // @route   POST api/contacts
 // @desc    Add new contact for particular user (CREATE)
