@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 const { check, validationResult } = require('express-validator');
 
 const User = require('../models/User');
@@ -16,12 +19,55 @@ router.post(
 			min: 6
 		})
 	],
-	(req, res) => {
+	async (req, res) => {
+		//check if user input passes validation
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ errors: errors.array() });
 		}
-		res.send(req.body);
+
+		const { name, email, password } = req.body;
+
+		try {
+			//check if user exists in database
+			let user = await User.findOne({ email });
+			if (user) {
+				return res.status(400).json({ msg: 'User already exists' });
+			}
+
+			//encrypt password
+			const salt = await bcrypt.genSalt(10);
+			const encryptedPassword = await bcrypt.hash(password, salt);
+
+			//create new User and save it to database
+			user = new User({
+				name,
+				email,
+				password: encryptedPassword
+			});
+			await user.save();
+
+			//assign JSON web token
+			const payload = {
+				user: {
+					id: user.id
+				}
+			};
+			jwt.sign(
+				payload,
+				config.get('jwtSecret'),
+				{
+					expiresIn: 360000
+				},
+				(err, token) => {
+					if (err) throw err;
+					res.json({ token });
+				}
+			);
+		} catch (err) {
+			console.log(err.message);
+			res.status(500).send('Server Error');
+		}
 	}
 );
 
