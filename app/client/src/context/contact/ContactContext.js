@@ -27,7 +27,8 @@ const initialState = {
 			phone: '87654321',
 			type: 'professional'
 		}
-	]
+	],
+	current: null
 };
 
 function ContactContextProvider(props) {
@@ -45,13 +46,28 @@ function ContactContextProvider(props) {
 		dispatch({ type: 'DELETE_CONTACT', payload: updatedContacts });
 	}
 	//Set Current Contact
+	function setCurrent(contact) {
+		dispatch({ type: 'SET_CURRENT', payload: contact });
+	}
 	//Clear Current Contact
+	function clearCurrent() {
+		dispatch({ type: 'SET_CURRENT', payload: null });
+	}
 	//Update Contact
 	//Filter Contacts
 	//Clear Filter
 
 	return (
-		<ContactContext.Provider value={{ contacts: contactState.contacts, addContact, deleteContact }}>
+		<ContactContext.Provider
+			value={{
+				contacts: contactState.contacts,
+				current: contactState.current,
+				addContact,
+				deleteContact,
+				setCurrent,
+				clearCurrent
+			}}
+		>
 			{props.children}
 		</ContactContext.Provider>
 	);
