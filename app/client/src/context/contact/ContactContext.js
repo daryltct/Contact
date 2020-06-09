@@ -54,6 +54,16 @@ function ContactContextProvider(props) {
 		dispatch({ type: 'SET_CURRENT', payload: null });
 	}
 	//Update Contact
+	function updateContact(updatedContact) {
+		const currentContacts = contactState.contacts;
+		const updatedContacts = currentContacts.map((contact) => {
+			if (contact.id === updatedContact.id) {
+				return updatedContact;
+			}
+			return contact;
+		});
+		dispatch({ type: 'UPDATE_CONTACT', payload: updatedContacts });
+	}
 	//Filter Contacts
 	//Clear Filter
 
@@ -65,7 +75,8 @@ function ContactContextProvider(props) {
 				addContact,
 				deleteContact,
 				setCurrent,
-				clearCurrent
+				clearCurrent,
+				updateContact
 			}}
 		>
 			{props.children}
