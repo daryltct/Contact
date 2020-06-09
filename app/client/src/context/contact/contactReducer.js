@@ -6,7 +6,10 @@ export default function contactReducer(state, action) {
 				contacts: [ ...state.contacts, action.payload ]
 			};
 		case 'DELETE_CONTACT':
-			return {};
+			return {
+				...state,
+				contacts: action.payload
+			};
 		case 'SET_CURRENT':
 			return {};
 		case 'UPDATE_CONTACT':

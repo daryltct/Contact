@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ContactContext } from '../../context/contact/ContactContext';
 
 function ContactItem({ contact: { id, name, email, phone, type } }) {
+	const { deleteContact } = useContext(ContactContext);
+
+	function handleDelete() {
+		deleteContact(id);
+	}
+
 	return (
 		<div className="card bg-light">
 			<h3 className="text-primary text-left">
@@ -25,7 +32,9 @@ function ContactItem({ contact: { id, name, email, phone, type } }) {
 			</ul>
 			<p>
 				<button className="btn btn-dark btn-sm">Edit</button>
-				<button className="btn btn-danger btn-sm">Delete</button>
+				<button className="btn btn-danger btn-sm" onClick={handleDelete}>
+					Delete
+				</button>
 			</p>
 		</div>
 	);
