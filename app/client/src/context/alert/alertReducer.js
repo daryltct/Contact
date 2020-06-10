@@ -1,9 +1,9 @@
 export default function alertReducer(state, action) {
 	switch (action.type) {
 		case 'SET_ALERT':
-			return {};
+			return [ ...state, action.payload ];
 		case 'REMOVE_ALERT':
-			return {};
+			return state.filter((alert) => alert.id !== action.payload);
 		default:
 			return state;
 	}
