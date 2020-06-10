@@ -4,6 +4,8 @@ import './App.css';
 import Navbar from './components/layout/Navbar';
 import Home from './components/pages/Home';
 import About from './components/pages/About';
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
 
 function App() {
 	return (
@@ -17,6 +19,12 @@ function App() {
 						</Route>
 						<Route exact path="/about">
 							<About />
+						</Route>
+						<Route path="/register">
+							<Register />
+						</Route>
+						<Route path="/login">
+							<Login />
 						</Route>
 					</Switch>
 				</div>
