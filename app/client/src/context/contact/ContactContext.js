@@ -28,7 +28,8 @@ const initialState = {
 			type: 'professional'
 		}
 	],
-	current: null
+	current: null,
+	filtered: null
 };
 
 function ContactContextProvider(props) {
@@ -65,18 +66,32 @@ function ContactContextProvider(props) {
 		dispatch({ type: 'UPDATE_CONTACT', payload: updatedContacts });
 	}
 	//Filter Contacts
+	function filterContacts(query) {
+		const currentContacts = contactState.contacts;
+		const filteredContacts = currentContacts.filter((contact) => {
+			const regex = new RegExp(`${query}`, 'gi');
+			return contact.name.match(regex) || contact.email.match(regex);
+		});
+		dispatch({ type: 'FILTER_CONTACTS', payload: filteredContacts });
+	}
 	//Clear Filter
+	function clearFilter() {
+		dispatch({ type: 'CLEAR_FILTER' });
+	}
 
 	return (
 		<ContactContext.Provider
 			value={{
 				contacts: contactState.contacts,
 				current: contactState.current,
+				filtered: contactState.filtered,
 				addContact,
 				deleteContact,
 				setCurrent,
 				clearCurrent,
-				updateContact
+				updateContact,
+				filterContacts,
+				clearFilter
 			}}
 		>
 			{props.children}

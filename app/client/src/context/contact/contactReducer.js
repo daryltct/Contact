@@ -21,9 +21,15 @@ export default function contactReducer(state, action) {
 				contacts: action.payload
 			};
 		case 'FILTER_CONTACTS':
-			return {};
+			return {
+				...state,
+				filtered: action.payload
+			};
 		case 'CLEAR_FILTER':
-			return {};
+			return {
+				...state,
+				filtered: null
+			};
 		default:
 			return state;
 	}
