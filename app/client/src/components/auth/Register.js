@@ -1,8 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { AlertContext } from '../../context/alert/AlertContext';
+import { AuthContext } from '../../context/auth/AuthContext';
 
 function Register() {
 	const { setAlert } = useContext(AlertContext);
+	const { register, error, clearErrors } = useContext(AuthContext);
 
 	const [ user, setUser ] = useState({
 		name: '',
@@ -11,6 +13,16 @@ function Register() {
 		passwordCfm: ''
 	});
 	const { name, email, password, passwordCfm } = user;
+
+	useEffect(
+		() => {
+			if (error) {
+				setAlert(error, 'danger');
+			}
+			clearErrors();
+		},
+		[ error ]
+	);
 
 	function handleChange(event) {
 		const { name, value } = event.target;
@@ -25,7 +37,7 @@ function Register() {
 		if (password !== passwordCfm) {
 			setAlert('Passwords do not match', 'danger');
 		} else {
-			console.log('Success');
+			register({ name, email, password });
 		}
 	}
 
