@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { AlertContext } from '../../context/alert/AlertContext';
 import { AuthContext } from '../../context/auth/AuthContext';
 
-function Register() {
+function Register(props) {
+	let history = useHistory();
 	const { setAlert } = useContext(AlertContext);
-	const { register, error, clearErrors } = useContext(AuthContext);
+	const { register, error, clearErrors, isLoggedIn } = useContext(AuthContext);
 
 	const [ user, setUser ] = useState({
 		name: '',
@@ -16,12 +18,17 @@ function Register() {
 
 	useEffect(
 		() => {
+			//if user already logged in, redirect to home page
+			if (isLoggedIn) {
+				history.push('/');
+			}
+
 			if (error) {
 				setAlert(error, 'danger');
+				clearErrors();
 			}
-			clearErrors();
 		},
-		[ error ]
+		[ error, isLoggedIn, history ]
 	);
 
 	function handleChange(event) {

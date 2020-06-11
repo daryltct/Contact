@@ -22,9 +22,21 @@ export default function authReducer(state, action) {
 		case 'LOGIN_FAIL':
 			return {};
 		case 'USER_LOADED':
-			return {};
+			return {
+				...state,
+				isLoggedIn: true,
+				loading: false,
+				user: action.payload
+			};
 		case 'AUTH_ERROR':
-			return {};
+			localStorage.removeItem('token');
+			return {
+				token: null,
+				isLoggedIn: false,
+				user: null,
+				loading: false,
+				error: action.payload
+			};
 		case 'LOGOUT':
 			return {};
 		case 'CLEAR_ERRORS':
