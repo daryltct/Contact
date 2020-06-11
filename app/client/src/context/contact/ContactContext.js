@@ -5,7 +5,7 @@ import contactReducer from './contactReducer';
 const ContactContext = createContext();
 
 const initialState = {
-	contacts: [],
+	contacts: null,
 	current: null,
 	filtered: null,
 	error: null
@@ -13,6 +13,16 @@ const initialState = {
 
 function ContactContextProvider(props) {
 	const [ contactState, dispatch ] = useReducer(contactReducer, initialState);
+
+	//Get Contacts
+	async function getContacts() {
+		try {
+			const res = await axios.get('/api/contacts');
+			dispatch({ type: 'GET_CONTACTS', payload: res.data });
+		} catch (err) {
+			dispatch({ type: 'CONTACT_ERROR', payload: err.response.msg });
+		}
+	}
 
 	//Add Contact
 	async function addContact(contact) {
@@ -62,6 +72,10 @@ function ContactContextProvider(props) {
 		});
 		dispatch({ type: 'FILTER_CONTACTS', payload: filteredContacts });
 	}
+	//Clear Contacts
+	function clearContacts() {
+		dispatch({ type: 'CLEAR_CONTACTS' });
+	}
 	//Clear Filter
 	function clearFilter() {
 		dispatch({ type: 'CLEAR_FILTER' });
@@ -74,12 +88,14 @@ function ContactContextProvider(props) {
 				current: contactState.current,
 				filtered: contactState.filtered,
 				error: contactState.error,
+				getContacts,
 				addContact,
 				deleteContact,
 				setCurrent,
 				clearCurrent,
 				updateContact,
 				filterContacts,
+				clearContacts,
 				clearFilter
 			}}
 		>

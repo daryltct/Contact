@@ -1,14 +1,22 @@
 export default function contactReducer(state, action) {
 	switch (action.type) {
+		case 'GET_CONTACTS':
+			return {
+				...state,
+				contacts: action.payload,
+				loading: false
+			};
 		case 'ADD_CONTACT':
 			return {
 				...state,
-				contacts: [ ...state.contacts, action.payload ]
+				contacts: [ ...state.contacts, action.payload ],
+				loading: false
 			};
 		case 'DELETE_CONTACT':
 			return {
 				...state,
-				contacts: action.payload
+				contacts: action.payload,
+				loading: false
 			};
 		case 'SET_CURRENT':
 			return {
@@ -18,7 +26,8 @@ export default function contactReducer(state, action) {
 		case 'UPDATE_CONTACT':
 			return {
 				...state,
-				contacts: action.payload
+				contacts: action.payload,
+				loading: false
 			};
 		case 'FILTER_CONTACTS':
 			return {
@@ -29,6 +38,13 @@ export default function contactReducer(state, action) {
 			return {
 				...state,
 				filtered: null
+			};
+		case 'CLEAR_CONTACTS':
+			return {
+				contacts: null,
+				current: null,
+				filtered: null,
+				error: null
 			};
 		case 'CONTACT_ERROR':
 			return {
