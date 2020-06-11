@@ -47,6 +47,20 @@ function ContactContextProvider(props) {
 			dispatch({ type: 'CONTACT_ERROR', payload: err.response.msg });
 		}
 	}
+	//Update Contact
+	async function updateContact(updatedContact) {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		};
+		try {
+			const res = await axios.put(`/api/contacts/${updatedContact._id}`, updatedContact, config);
+			dispatch({ type: 'UPDATE_CONTACT', payload: res.data });
+		} catch (err) {
+			dispatch({ type: 'CONTACT_ERROR', payload: err.response.msg });
+		}
+	}
 	//Set Current Contact
 	function setCurrent(contact) {
 		dispatch({ type: 'SET_CURRENT', payload: contact });
@@ -54,17 +68,6 @@ function ContactContextProvider(props) {
 	//Clear Current Contact
 	function clearCurrent() {
 		dispatch({ type: 'SET_CURRENT', payload: null });
-	}
-	//Update Contact
-	function updateContact(updatedContact) {
-		const currentContacts = contactState.contacts;
-		const updatedContacts = currentContacts.map((contact) => {
-			if (contact.id === updatedContact.id) {
-				return updatedContact;
-			}
-			return contact;
-		});
-		dispatch({ type: 'UPDATE_CONTACT', payload: updatedContacts });
 	}
 	//Filter Contacts
 	function filterContacts(query) {
