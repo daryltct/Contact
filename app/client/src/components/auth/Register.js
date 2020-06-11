@@ -6,7 +6,7 @@ import { AuthContext } from '../../context/auth/AuthContext';
 function Register(props) {
 	let history = useHistory();
 	const { setAlert } = useContext(AlertContext);
-	const { register, error, clearErrors, isLoggedIn } = useContext(AuthContext);
+	const { register, error, clearErrors, isLoggedIn, loadUser } = useContext(AuthContext);
 
 	const [ user, setUser ] = useState({
 		name: '',
@@ -18,6 +18,7 @@ function Register(props) {
 
 	useEffect(
 		() => {
+			loadUser();
 			//if user already logged in, redirect to home page
 			if (isLoggedIn) {
 				history.push('/');

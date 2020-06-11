@@ -5,7 +5,7 @@ import { AlertContext } from '../../context/alert/AlertContext';
 
 function Login() {
 	let history = useHistory();
-	const { login, error, clearErrors, isLoggedIn } = useContext(AuthContext);
+	const { login, error, clearErrors, isLoggedIn, loadUser } = useContext(AuthContext);
 	const { setAlert } = useContext(AlertContext);
 
 	const [ user, setUser ] = useState({
@@ -16,6 +16,7 @@ function Login() {
 
 	useEffect(
 		() => {
+			loadUser();
 			//if user already logged in, redirect to home page
 			if (isLoggedIn) {
 				history.push('/');

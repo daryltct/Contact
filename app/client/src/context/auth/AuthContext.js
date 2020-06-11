@@ -63,6 +63,9 @@ function AuthContextProvider(props) {
 		}
 	}
 	// Logout
+	function logout() {
+		dispatch({ type: 'LOGOUT' });
+	}
 	// Clear Errors
 	function clearErrors() {
 		dispatch({ type: 'CLEAR_ERRORS' });
@@ -79,7 +82,8 @@ function AuthContextProvider(props) {
 				register,
 				clearErrors,
 				loadUser,
-				login
+				login,
+				logout
 			}}
 		>
 			{props.children}

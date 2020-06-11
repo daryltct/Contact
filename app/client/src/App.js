@@ -7,6 +7,7 @@ import About from './components/pages/About';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Alerts from './components/layout/Alerts';
+import PrivateRoute from './components/routing/PrivateRoute';
 
 import setAuthToken from './utils/setAuthToken';
 
@@ -22,18 +23,10 @@ function App() {
 				<div className="container">
 					<Alerts />
 					<Switch>
-						<Route exact path="/">
-							<Home />
-						</Route>
-						<Route exact path="/about">
-							<About />
-						</Route>
-						<Route path="/register">
-							<Register />
-						</Route>
-						<Route path="/login">
-							<Login />
-						</Route>
+						<PrivateRoute exact path="/" component={Home} />
+						<Route exact path="/about" component={About} />
+						<Route path="/register" component={Register} />
+						<Route path="/login" component={Login} />
 					</Switch>
 				</div>
 			</Fragment>

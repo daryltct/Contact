@@ -5,12 +5,17 @@ import { AuthContext } from '../../context/auth/AuthContext';
 function Navbar() {
 	const { isLoggedIn, user, logout } = useContext(AuthContext);
 
+	function handleClick() {
+		logout();
+	}
+
 	const authLinks = (
 		<Fragment>
 			<li>Hello, {user && user.name}</li>
 			<li>
-				<a href="#" />
-				<i className="fas fa-sign-out-alt" /> <span className="hide-sm">Logout</span>
+				<a href="#" onClick={handleClick}>
+					<i className="fas fa-sign-out-alt" /> <span className="hide-sm">Logout</span>
+				</a>
 			</li>
 		</Fragment>
 	);
