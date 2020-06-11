@@ -9,13 +9,13 @@ export default function contactReducer(state, action) {
 		case 'ADD_CONTACT':
 			return {
 				...state,
-				contacts: [ ...state.contacts, action.payload ],
+				contacts: [ action.payload, ...state.contacts ],
 				loading: false
 			};
 		case 'DELETE_CONTACT':
 			return {
 				...state,
-				contacts: action.payload,
+				contacts: state.contacts.filter((contact) => contact._id !== action.payload),
 				loading: false
 			};
 		case 'SET_CURRENT':

@@ -39,10 +39,13 @@ function ContactContextProvider(props) {
 		}
 	}
 	//Delete Contact
-	function deleteContact(id) {
-		const currentContacts = contactState.contacts;
-		const updatedContacts = currentContacts.filter((contact) => contact.id !== id);
-		dispatch({ type: 'DELETE_CONTACT', payload: updatedContacts });
+	async function deleteContact(id) {
+		try {
+			await axios.delete(`/api/contacts/${id}`);
+			dispatch({ type: 'DELETE_CONTACT', payload: id });
+		} catch (err) {
+			dispatch({ type: 'CONTACT_ERROR', payload: err.response.msg });
+		}
 	}
 	//Set Current Contact
 	function setCurrent(contact) {
