@@ -53,7 +53,7 @@ function ContactForm() {
 	return (
 		<form action="" onSubmit={handleSubmit}>
 			<h2 className="text-primary">{current ? 'Edit Contact' : 'Add Contact'}</h2>
-			<input name="name" type="text" placeholder="Name" value={contact.name} onChange={handleChange} />
+			<input name="name" type="text" placeholder="Name" value={contact.name} onChange={handleChange} required />
 			<input name="email" type="text" placeholder="Email" value={contact.email} onChange={handleChange} />
 			<input name="phone" type="text" placeholder="Phone" value={contact.phone} onChange={handleChange} />
 			<h4>Contact Type</h4>

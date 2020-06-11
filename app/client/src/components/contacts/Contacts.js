@@ -9,13 +9,13 @@ function Contacts() {
 	let contactsComponents;
 	if (filtered === null) {
 		contactsComponents = contacts.map((contact) => (
-			<CSSTransition key={contact.id} timeout={500} classNames="item">
+			<CSSTransition key={contact._id} timeout={500} classNames="item">
 				<ContactItem contact={contact} />
 			</CSSTransition>
 		));
 	} else {
 		contactsComponents = filtered.map((contact) => (
-			<CSSTransition key={contact.id} timeout={500} classNames="item">
+			<CSSTransition key={contact._id} timeout={500} classNames="item">
 				<ContactItem contact={contact} />
 			</CSSTransition>
 		));
@@ -23,9 +23,11 @@ function Contacts() {
 
 	return (
 		<Fragment>
-			<TransitionGroup>
-				{contactsComponents.length > 0 ? contactsComponents : <h4>Add your first contact!</h4>}
-			</TransitionGroup>
+			{contactsComponents.length > 0 ? (
+				<TransitionGroup>{contactsComponents}</TransitionGroup>
+			) : (
+				<h4>Add your first contact!</h4>
+			)}
 		</Fragment>
 	);
 }
