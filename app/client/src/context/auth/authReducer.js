@@ -18,9 +18,22 @@ export default function authReducer(state, action) {
 				error: action.payload
 			};
 		case 'LOGIN_SUCCESS':
-			return {};
+			localStorage.setItem('token', action.payload.token);
+			return {
+				...state,
+				token: action.payload.token,
+				isLoggedIn: true,
+				loading: false
+			};
 		case 'LOGIN_FAIL':
-			return {};
+			localStorage.removeItem('token');
+			return {
+				token: null,
+				isLoggedIn: false,
+				user: null,
+				loading: false,
+				error: action.payload
+			};
 		case 'USER_LOADED':
 			return {
 				...state,

@@ -47,6 +47,21 @@ function AuthContextProvider(props) {
 		}
 	}
 	// Login
+	async function login(formData) {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		};
+
+		try {
+			const res = await axios.post('/api/auth', formData, config);
+			dispatch({ type: 'LOGIN_SUCCESS', payload: res.data });
+			loadUser();
+		} catch (err) {
+			dispatch({ type: 'LOGIN_FAIL', payload: err.response.data.msg });
+		}
+	}
 	// Logout
 	// Clear Errors
 	function clearErrors() {
@@ -63,7 +78,8 @@ function AuthContextProvider(props) {
 				error: authState.error,
 				register,
 				clearErrors,
-				loadUser
+				loadUser,
+				login
 			}}
 		>
 			{props.children}
