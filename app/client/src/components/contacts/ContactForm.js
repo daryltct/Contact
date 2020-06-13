@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { ContactContext } from '../../context/contact/ContactContext';
+import React, { useState, useEffect } from 'react';
+import { useContacts, addContact, clearCurrent, updateContact } from '../../context/contact/ContactContext';
 
 function ContactForm() {
-	const { addContact, current, clearCurrent, updateContact } = useContext(ContactContext);
+	const [ contactState, contactDispatch ] = useContacts();
+	const { current } = contactState;
 
 	const [ contact, setContact ] = useState({
 		name: '',
@@ -38,16 +39,22 @@ function ContactForm() {
 	function handleSubmit(event) {
 		event.preventDefault();
 		if (!current) {
-			addContact(contact);
+			addContact(contactDispatch, contact);
 		} else {
-			updateContact(contact);
+			updateContact(contactDispatch, contact);
 		}
 
 		clearAll();
+		setContact({
+			name: '',
+			email: '',
+			phone: '',
+			type: 'personal'
+		});
 	}
 
 	function clearAll() {
-		clearCurrent();
+		clearCurrent(contactDispatch);
 	}
 
 	return (

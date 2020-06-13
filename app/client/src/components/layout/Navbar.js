@@ -1,15 +1,15 @@
-import React, { useContext, Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/auth/AuthContext';
-import { ContactContext } from '../../context/contact/ContactContext';
+import { useContacts, clearContacts } from '../../context/contact/ContactContext';
 
 function Navbar() {
+	const contactDispatch = useContacts()[1]; //just retrieve index 1 (dispatch), without contactState
 	const { isLoggedIn, user, logout } = useContext(AuthContext);
-	const { clearContacts } = useContext(ContactContext);
 
 	function handleClick() {
 		logout();
-		clearContacts();
+		clearContacts(contactDispatch);
 	}
 
 	const authLinks = (

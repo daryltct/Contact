@@ -34,7 +34,10 @@ export default function contactReducer(state, action) {
 		case 'FILTER_CONTACTS':
 			return {
 				...state,
-				filtered: action.payload
+				filtered: state.contacts.filter(({ name, email }) => {
+					const testString = `${name}${email}`.toLowerCase();
+					return testString.includes(action.payload.toLowerCase());
+				})
 			};
 		case 'CLEAR_FILTER':
 			return {

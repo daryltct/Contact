@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
-import { ContactContext } from '../../context/contact/ContactContext';
+import React from 'react';
+import { useContacts, deleteContact, setCurrent, clearCurrent } from '../../context/contact/ContactContext';
 
 function ContactItem({ contact }) {
+	const [ contactState, contactDispatch ] = useContacts();
 	const { _id, name, email, phone, type } = contact;
-	const { deleteContact, setCurrent, clearCurrent } = useContext(ContactContext);
 
 	function handleDelete() {
-		clearCurrent();
-		deleteContact(_id);
+		clearCurrent(contactDispatch);
+		deleteContact(contactDispatch, _id);
 	}
 
 	return (
@@ -33,7 +33,7 @@ function ContactItem({ contact }) {
 				)}
 			</ul>
 			<p>
-				<button className="btn btn-dark btn-sm" onClick={(onClick) => setCurrent(contact)}>
+				<button className="btn btn-dark btn-sm" onClick={(onClick) => setCurrent(contactDispatch, contact)}>
 					Edit
 				</button>
 				<button className="btn btn-danger btn-sm" onClick={handleDelete}>

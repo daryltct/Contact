@@ -1,8 +1,9 @@
-import React, { useEffect, useContext, useRef } from 'react';
-import { ContactContext } from '../../context/contact/ContactContext';
+import React, { useEffect, useRef } from 'react';
+import { useContacts, filterContacts, clearFilter } from '../../context/contact/ContactContext';
 
 function ContactFilter() {
-	const { filtered, filterContacts, clearFilter } = useContext(ContactContext);
+	const [ contactState, contactDispatch ] = useContacts();
+	const { filtered } = contactState;
 	const text = useRef('');
 
 	useEffect(() => {
@@ -14,9 +15,9 @@ function ContactFilter() {
 	function handleChange(event) {
 		const { value } = event.target;
 		if (text.current.value) {
-			filterContacts(value);
+			filterContacts(contactDispatch, value);
 		} else {
-			clearFilter();
+			clearFilter(contactDispatch);
 		}
 	}
 
