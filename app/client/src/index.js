@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import ContactContextProvider from './context/contact/ContactContext';
-import { AuthContextProvider } from './context/auth/AuthContext';
+import AuthContextProvider from './context/auth/AuthContext';
 import { AlertContextProvider } from './context/alert/AlertContext';
 
 ReactDOM.render(

@@ -1,14 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { AuthContext } from '../../context/auth/AuthContext';
+import { useAuth } from '../../context/auth/AuthContext';
+import Spinner from '../../components/layout/Spinner';
 
 function PrivateRoute({ component: Component, ...rest }) {
-	const { isLoggedIn, loading } = useContext(AuthContext);
+	const [ authState ] = useAuth();
+	const { isLoggedIn, loading } = authState;
 
 	return (
 		<Route
 			{...rest}
-			render={(props) => (!isLoggedIn && !loading ? <Redirect to="/login" /> : <Component {...props} />)}
+			render={(props) =>
+				loading ? <Spinner /> : isLoggedIn ? <Component {...props} /> : <Redirect to="/login" />}
 		/>
 	);
 }

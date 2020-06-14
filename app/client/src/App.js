@@ -9,12 +9,6 @@ import Login from './components/auth/Login';
 import Alerts from './components/layout/Alerts';
 import PrivateRoute from './components/routing/PrivateRoute';
 
-import setAuthToken from './utils/setAuthToken';
-
-if (localStorage.token) {
-	setAuthToken(localStorage.token);
-}
-
 function App() {
 	return (
 		<Router>

@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { AuthContext } from '../../context/auth/AuthContext';
+import { useAuth, login, clearErrors } from '../../context/auth/AuthContext';
 import { AlertContext } from '../../context/alert/AlertContext';
 
 function Login() {
 	let history = useHistory();
-	const { login, error, clearErrors, isLoggedIn, loadUser } = useContext(AuthContext);
+	const [ authState, authDispatch ] = useAuth();
+	const { error, isLoggedIn } = authState;
 	const { setAlert } = useContext(AlertContext);
 
 	const [ user, setUser ] = useState({
@@ -16,7 +17,6 @@ function Login() {
 
 	useEffect(
 		() => {
-			loadUser();
 			//if user already logged in, redirect to home page
 			if (isLoggedIn) {
 				history.push('/');
@@ -24,10 +24,10 @@ function Login() {
 
 			if (error) {
 				setAlert(error, 'danger');
-				clearErrors();
+				clearErrors(authDispatch);
 			}
 		},
-		[ error, isLoggedIn, history ]
+		[ error, isLoggedIn, history, authDispatch, setAlert ]
 	);
 
 	function handleChange(event) {
@@ -40,10 +40,7 @@ function Login() {
 
 	function handleSubmit(event) {
 		event.preventDefault();
-		login({
-			email,
-			password
-		});
+		login(authDispatch, { email, password });
 	}
 
 	return (

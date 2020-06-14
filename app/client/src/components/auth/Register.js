@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AlertContext } from '../../context/alert/AlertContext';
-import { AuthContext } from '../../context/auth/AuthContext';
+import { useAuth, register, clearErrors } from '../../context/auth/AuthContext';
 
 function Register(props) {
 	let history = useHistory();
 	const { setAlert } = useContext(AlertContext);
-	const { register, error, clearErrors, isLoggedIn, loadUser } = useContext(AuthContext);
+	const [ authState, authDispatch ] = useAuth();
+	const { error, isLoggedIn } = authState;
 
 	const [ user, setUser ] = useState({
 		name: '',
@@ -18,7 +19,6 @@ function Register(props) {
 
 	useEffect(
 		() => {
-			loadUser();
 			//if user already logged in, redirect to home page
 			if (isLoggedIn) {
 				history.push('/');
@@ -26,10 +26,10 @@ function Register(props) {
 
 			if (error) {
 				setAlert(error, 'danger');
-				clearErrors();
+				clearErrors(authDispatch);
 			}
 		},
-		[ error, isLoggedIn, history ]
+		[ error, isLoggedIn, history, authDispatch, setAlert ]
 	);
 
 	function handleChange(event) {
@@ -45,7 +45,7 @@ function Register(props) {
 		if (password !== passwordCfm) {
 			setAlert('Passwords do not match', 'danger');
 		} else {
-			register({ name, email, password });
+			register(authDispatch, { name, email, password });
 		}
 	}
 
